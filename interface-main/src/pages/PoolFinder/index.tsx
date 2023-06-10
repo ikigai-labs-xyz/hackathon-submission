@@ -79,7 +79,7 @@ export default function PoolFinder() {
         }
       } catch (error) {
         console.error('Error fetching contract security', error);
-      }
+      } 
     };
 
     checkContractSecurity();
