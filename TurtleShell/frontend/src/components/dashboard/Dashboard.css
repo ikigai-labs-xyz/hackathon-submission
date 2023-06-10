@@ -1,0 +1,61 @@
+.h1 {
+    font-style: normal;
+    font-size: 50px;
+    text-align: center;
+    
+    color: #DBDBDB;}
+
+.h2 {
+    font-size: 36px;
+    line-height: 44px;
+    padding-bottom: 2rem;
+    text-align: center;
+
+    color: #383838;}
+
+.submit{
+
+    border-radius: 10px;
+    border: none;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-color: #000000;
+    line-height: 29px;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.5rem 0.5rem;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #FFFFFF;}
+
+
+    /* FormStyles.css */
+
+/* Apply dark background color to the form */
+.form {
+    background-color: #222;
+    color: #fff;
+  }
+  
+  /* Apply styles to form elements */
+  .form input,
+  .form select,
+  .form button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .form button {
+    cursor: pointer;
+  }
+  

@@ -1,33 +1,49 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { BsArrowRightShort } from 'react-icons/bs';
+import './Dashboard.css';
 
-const AuditorForm = ({ onSubmit }) => (   // accept the onSubmit prop
+const AuditorForm = ({ handleFormSubmit }) => (   // accept the onSubmit prop
+<>
   <div>
-    <h1>Auditor Form</h1>
+    <h1 className='h1'>Auditor Form</h1>
+    <h2 className="h2">Type of Contract</h2>
+  </div>
+    <div className='submit'>
     <Formik
       initialValues={{ color: '' }}
       validationSchema={Yup.object({
         color: Yup.string()
           .required('Required'),
       })}
-      onSubmit={onSubmit}   // use the onSubmit prop here
+      onSubmit={handleFormSubmit}   // use the onSubmit prop here
     >
       <Form>
-        <label htmlFor="color">Favorite Color</label>
-        <Field as="select" name="color">
-          <option value="">Select</option>
-          <option value="red">ERC-20</option>
-          <option value="green">ERC-721</option>
-          <option value="blue">ERC-1155</option>
-          <option value="blue">Flash Loan</option>
+        <label htmlFor="color"></label>
+        <Field as="select" name="Type">
+          <option value="#">Select</option>
+          <option value="ERC-2O">ERC-20</option>
+          <option value="ERC-721">ERC-721</option>
+          <option value="ERC-1155">ERC-1155</option>
+          <option value="#">Flash Loan</option>
         </Field>
 
         <ErrorMessage name="color" component="div" />
 
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
-  </div>
+        </Form>
+      </Formik>
+      </div>
+
+      <div>
+        <button
+          className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
+        >
+          <div className="flex items-center">
+            Submit<BsArrowRightShort size={20} />
+          </div>
+        </button>
+      </div>
+  </>
 );
 
 export default AuditorForm;
