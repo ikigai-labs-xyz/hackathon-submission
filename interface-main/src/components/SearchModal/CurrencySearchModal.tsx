@@ -86,11 +86,8 @@ export default memo(function CurrencySearchModal({
           console.log("good-erc20")
         } else {
           console.log("bad-erc20")
+          showTokenSafetySpeedbump(currency)
         }
-
-        console.log("contractSecurityData", contractSecurityData)
-
-        showTokenSafetySpeedbump(currency)
       } else {
         onCurrencySelect(currency)
         onDismiss()
