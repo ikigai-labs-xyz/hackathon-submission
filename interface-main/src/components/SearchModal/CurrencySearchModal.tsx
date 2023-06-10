@@ -9,6 +9,11 @@ import Modal from "../Modal"
 import { CurrencySearch } from "./CurrencySearch"
 import SafetyWarning from "pages/AddLiquidity/SafetyWarning"
 
+import smartContractArtifact from "pages/AddLiquidity/SmartContractNFT.json"
+import { ethers } from "ethers"
+import { useWeb3React } from "@web3-react/core"
+import { keccak256 } from "@ethersproject/keccak256"
+import { toUtf8Bytes } from "@ethersproject/strings"
 interface CurrencySearchModalProps {
   isOpen: boolean
   onDismiss: () => void
@@ -55,14 +60,36 @@ export default memo(function CurrencySearchModal({
     setModalView(CurrencyModalView.tokenSafety)
   }
 
+  const { provider } = useWeb3React()
   const handleCurrencySelect = useCallback(
-    (currency: Currency, hasWarning?: boolean) => {
+    async (currency: Currency, hasWarning?: boolean) => {
       if (
         hasWarning &&
         currency.isToken
         // always show modal
         // && !userAddedTokens.find((token) => token.equals(currency) )
       ) {
+        const smartContractNft = new ethers.Contract(
+          "0xA3B1Ed01730fbeFB4ae0b33456Ae59C8192ac5CB",
+          smartContractArtifact.abi,
+          provider
+        )
+
+        const contractSecurityData = await smartContractNft.getContractSecurity(
+          currency.address
+        )
+
+        if (
+          contractSecurityData.contractType ==
+          keccak256(toUtf8Bytes("good-erc20"))
+        ) {
+          console.log("good-erc20")
+        } else {
+          console.log("bad-erc20")
+        }
+
+        console.log("contractSecurityData", contractSecurityData)
+
         showTokenSafetySpeedbump(currency)
       } else {
         onCurrencySelect(currency)

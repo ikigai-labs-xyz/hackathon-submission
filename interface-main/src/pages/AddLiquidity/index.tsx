@@ -94,10 +94,8 @@ import {
   Wrapper,
 } from "./styled"
 
-import smartContractArtifact from "./smartContractNft.json"
+import smartContractArtifact from "./SmartContractNFT.json"
 import { ethers } from "ethers"
-import { ContractSecurityData } from "./types"
-import { lg } from "make-plural"
 
 const DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
@@ -375,22 +373,21 @@ function AddLiquidity() {
     }
   }
 
-  const smartContractNft = new ethers.Contract(
-    "0xA3B1Ed01730fbeFB4ae0b33456Ae59C8192ac5CB",
-    smartContractArtifact.abi
-  )
-
   const handleCurrencySelect = useCallback(
     (
       currencyNew: Currency,
       currencyIdOther?: string
     ): (string | undefined)[] => {
-      const contractSecurityData: ContractSecurityData =
-        smartContractNft.getContractSecurity
 
-      console.log("contractSecurityData", contractSecurityData)
+      console.log('here')
 
-      // return
+    //   const smartContractNft = new ethers.Contract(
+    //     "0xA3B1Ed01730fbeFB4ae0b33456Ae59C8192ac5CB",
+    //     smartContractArtifact.abi
+    //   )      const contractSecurityData: ContractSecurityData =
+    //   smartContractNft.getContractSecurity
+    
+    // console.log("contractSecurityData", contractSecurityData)
 
       const currencyIdNew = currencyId(currencyNew)
 
@@ -421,6 +418,8 @@ function AddLiquidity() {
 
   const handleCurrencyASelect = useCallback(
     (currencyANew: Currency) => {
+      console.log('HERE',currencyANew)
+
       const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
       if (idB === undefined) {
         navigate(`/add/${idA}`)

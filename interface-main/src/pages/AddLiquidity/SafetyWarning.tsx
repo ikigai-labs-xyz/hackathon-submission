@@ -20,7 +20,7 @@ import styled from "styled-components/macro"
 import { ButtonText, CopyLinkIcon, ExternalLink } from "theme"
 import { ExplorerDataType, getExplorerLink } from "utils/getExplorerLink"
 
-import smartContractArtifact from "./smartContractNft.json"
+import SecuredDexArtifact from "./SecuredDex.json"
 import { ethers } from "ethers"
 import { useWeb3React } from "@web3-react/core"
 
@@ -276,7 +276,7 @@ export default function SafetyWarning({
   const acknowledge = () => {
     const smartContractNft = new ethers.Contract(
       "0xA3B1Ed01730fbeFB4ae0b33456Ae59C8192ac5CB",
-      smartContractArtifact.abi,
+      SecuredDexArtifact.abi,
       provider?.getSigner()
     )
 
