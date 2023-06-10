@@ -43,9 +43,9 @@ const AuditorSBT = ({ onSubmit }) => {
 		write?.()
 		console.log(prepareError, write, isSuccess)
 
-		if (isSuccess) {
+		 //if (isSuccess) {
 			Promise.resolve(onSubmit("mint badge"))
-		}
+		// }
 	}
 
 	return (
