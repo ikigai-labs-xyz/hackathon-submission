@@ -13,49 +13,27 @@
 
     color: #383838;}
 
-.submit{
+.submit {
+  display: flex;
+  justify-content: center; /* Align items horizontally */
+  align-items: center; /* Align items vertically */
+  width: 400px;
+  height: 100px;
+  background: linear-gradient(102.51deg, #8B63FF 0.09%, #021A6F 100%);
+  border-radius: 25px;
+}
 
-    border-radius: 10px;
-    border: none;
-    color: #FFFFFF;
-    font-size: 24px;
-    font-color: #000000;
-    line-height: 29px;
-    padding: 0.5rem 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 0.5rem 0.5rem;
-    cursor: pointer;
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    line-height: 29px;
-    text-align: center;
-    color: #FFFFFF;}
 
 
     /* FormStyles.css */
 
 /* Apply dark background color to the form */
 .form {
+  align-items: center;
+  flex-direction: column;
     background-color: #222;
     color: #fff;
   }
   
   /* Apply styles to form elements */
-  .form input,
-  .form select,
-  .form button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 8px;
-    margin-bottom: 10px;
-  }
-  
-  .form button {
-    cursor: pointer;
-  }
   
