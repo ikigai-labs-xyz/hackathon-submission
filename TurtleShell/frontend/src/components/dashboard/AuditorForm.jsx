@@ -4,7 +4,7 @@ import { BsArrowRightShort } from "react-icons/bs"
 import "./Dashboard.css"
 import { useState } from "react"
 
-const AuditorForm = ({ onSubmit }) => {
+const AuditorForm = ({ onSubmit, updateContractType }) => {
 	// accept the onSubmit prop
 	const [contractType, setContractType] = useState("")
 
@@ -24,6 +24,7 @@ const AuditorForm = ({ onSubmit }) => {
 					<Form
 						onChange={(e) => {
 							// get the value from the event
+							updateContractType(e.target.value)
 							setContractType(e.target.value)
 						}}
 					>
@@ -45,7 +46,7 @@ const AuditorForm = ({ onSubmit }) => {
 			<div>
 				<button
 					className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
-					onClick={() => onSubmit(contractType)}
+					onClick={() => onSubmit()}
 				>
 					<div className="flex items-center">
 						Submit

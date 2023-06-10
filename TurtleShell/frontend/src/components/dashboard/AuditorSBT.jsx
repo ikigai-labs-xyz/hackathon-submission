@@ -35,9 +35,7 @@ const AuditorSBT = ({ onSubmit }) => {
 	const { write, isSuccess } = useContractWrite(config)
 
 	const handleButtonClick = async () => {
-		console.log(chainIdToAdresses[chainId].AuditorNFT)
 		write?.()
-		console.log(prepareError, write, isSuccess)
 
 		if (isSuccess) {
 			Promise.resolve(onSubmit("mint badge"))

@@ -1,7 +1,6 @@
 import { useState } from "react"
 import Confetti from "react-confetti"
 import { useAccount, useChainId, useContractWrite, usePrepareContractWrite } from "wagmi"
-import MintNft from "../../components/dashboard/MintNft"
 import NavBar from "../../components/dashboard/Navbar"
 import NoWallet from "../../components/dashboard/NoWallet"
 import useWindowSize from "../../hooks/useWindowSize"
@@ -36,9 +35,8 @@ export default function Dashboard() {
 		// but that is not crucial here, as the SmartContractNFT minted here
 		// will not be used in the DEX example.
 		// You can theoretically mint any type here
+		auditor: address,
 		contractType: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(contractType)),
-		// just use a default value here or from the input
-		score: 50,
 	}
 	const chainId = useChainId()
 	const smartContractNftAddress = chainIdToAdresses[chainId]?.SmartContractNFT
@@ -515,21 +513,14 @@ export default function Dashboard() {
 		args: [contractAddress, contractSecurityData],
 	})
 
-	console.log("contractAddress", contractAddress)
-	console.log("smartContractNft", smartContractNftAddress)
-
-	const { write, isSuccess, error } = useContractWrite(config)
+	const { write, isSuccess, error, isLoading } = useContractWrite(config)
 
 	// function that gets called when clicking mint
 	async function onMint() {
 		write?.()
 
-		if (isSuccess) {
-			Promise.resolve()
-			// switch the page here
-
-			// maybe you have to call the onSubmit function here again,
-			// if it works the same way
+		if (!isLoading && isSuccess) {
+			Promise.resolve(setPageState(PageState.mintSuccess))
 		} else if (error) {
 			console.log("Error while minting Audit: ", error)
 		}
@@ -572,25 +563,15 @@ export default function Dashboard() {
 			case PageState.auditorForm:
 				content = (
 					<AuditorForm
-						onSubmit={(contractType) => {
+						updateContractType={(contractType) => {
 							setContractType(contractType)
-							setPageState(PageState.mintNft)
+						}}
+						onSubmit={async () => {
+							await onMint()
 						}}
 					/>
 				)
 
-				break
-
-			case PageState.mintNft:
-				content = (
-					<MintNft
-						contract={contractAddress}
-						loading={false}
-						score={0}
-						audits={[]}
-						mintNft={onMint}
-					/>
-				)
 				break
 
 			case PageState.mintSuccess:
