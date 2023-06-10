@@ -59,6 +59,10 @@ const networkConfig = {
     name: "scroll",
     contracts: contractsConfig,
   },
+  5001: {
+    name: "mantle",
+    contracts: contractsConfig,
+  },
   31337: {
     name: "hardhat",
     contracts: contractsConfig,
