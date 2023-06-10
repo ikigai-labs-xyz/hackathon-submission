@@ -31,7 +31,7 @@ export default function MintNft({ contract, loading, mintNft, score, audits }) {
 					<pre className="whitespace-pre-wrap break-words">
 						{JSON.stringify(
 							{
-								address: contract.address,
+								address: contract,
 								vulnerabilities: audits?.map?.((audit) => audit.vulnerabilityType),
 								recommendations: [{ solVersion: "0.8.19" }],
 							},

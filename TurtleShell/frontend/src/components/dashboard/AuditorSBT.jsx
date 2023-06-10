@@ -11,11 +11,7 @@ const AuditorSBT = ({ onSubmit }) => {
 	const { address: walletAddress } = useAccount()
 	const auditorNftAddress = chainIdToAdresses[chainId]?.AuditorNFT
 
-	const {
-		config,
-		error: prepareError,
-		isError: isPrepareError,
-	} = usePrepareContractWrite({
+	const { config, error: prepareError } = usePrepareContractWrite({
 		address: auditorNftAddress,
 		abi: [
 			{
@@ -43,9 +39,9 @@ const AuditorSBT = ({ onSubmit }) => {
 		write?.()
 		console.log(prepareError, write, isSuccess)
 
-		 //if (isSuccess) {
+		if (isSuccess) {
 			Promise.resolve(onSubmit("mint badge"))
-		// }
+		}
 	}
 
 	return (

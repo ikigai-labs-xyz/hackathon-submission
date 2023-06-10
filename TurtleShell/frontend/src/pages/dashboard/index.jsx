@@ -1,22 +1,14 @@
 import { useState } from "react"
 import Confetti from "react-confetti"
-import { useAccount, useChainId, useContractWrite, usePrepareContractWrite, useSigner } from "wagmi"
+import { useAccount, useChainId, useContractWrite, usePrepareContractWrite } from "wagmi"
 import MintNft from "../../components/dashboard/MintNft"
 import NavBar from "../../components/dashboard/Navbar"
 import NoWallet from "../../components/dashboard/NoWallet"
-import useGetContracts from "../../hooks/useGetContractsOfWalletAddress"
 import useWindowSize from "../../hooks/useWindowSize"
 import AuditorForm from "../../components/dashboard/AuditorForm"
 import AuditorSBT from "../../components/dashboard/AuditorSBT"
 import MintSuccess from "../../components/dashboard/MintSuccess"
 import { ChooseContract } from "../../components/dashboard/ChooseContract"
-
-import {
-	getAuditsOfContract,
-	getContractType,
-	getScoreOfContract,
-	getSourceCodeOfContract,
-} from "../../utils/api"
 import { ethers } from "ethers"
 import { chainIdToAdresses } from "../../utils/chainMapping"
 
@@ -32,102 +24,14 @@ const PageState = {
 export default function Dashboard() {
 	const [pageState, setPageState] = useState(PageState.auditorSBT)
 	const [contractAddress, setContractAddress] = useState("")
+	const [contractType, setContractType] = useState("default")
+
+	const [success, setSuccess] = useState({ show: false, contractAddress: "", hash: "" })
 
 	const { width, height } = useWindowSize()
 	const { address } = useAccount()
-	const { data: signer } = useSigner()
 
-	const [selectedContract, setSelectedContract] = useState({
-		address: "",
-		chain: 0,
-	})
-
-	const [loading, setLoading] = useState(false)
-	const [audits, setAudits] = useState("")
-	const [score, setScore] = useState("")
-	const [contractType, setContractType] = useState("")
-	const [error, setError] = useState("")
-	const [success, setSuccess] = useState({ show: false, hash: "" })
-
-	const { loading: getContractsLoading, loaded: getContractsLoaded, contracts } = useGetContracts(address)
-
-	async function performAudit(selectedContract, retryCount = 0) {
-		if (!selectedContract) return
-
-		try {
-			setError("")
-			setSuccess({ show: false, hash: "" })
-			setLoading(true)
-
-			const sourceCode = await getSourceCodeOfContract(selectedContract.address, selectedContract.chain)
-
-			if (
-				sourceCode.data &&
-				typeof sourceCode.data?.sources === "string" &&
-				sourceCode?.data.sources === ""
-			) {
-				setError("No audits found. This contract might not have been verified.")
-			}
-
-			if (sourceCode.status !== 200) {
-				if (retryCount < 3) {
-					console.log(`Failed to retrieve source code, trying again retry count ${++retryCount}`)
-					performAudit(selectedContract, ++retryCount)
-					return
-				} else {
-					throw new Error("Failed to retrieve source code")
-				}
-			}
-
-			const [audits, contractType] = await Promise.all([
-				getAuditsOfContract(sourceCode.data),
-				getContractType(sourceCode.data),
-			])
-
-			if (audits.status !== 201 || contractType.status !== 201) {
-				if (retryCount < 3) {
-					console.log(
-						`Failed to retrieve audits or contract type, trying again retry count ${++retryCount}`
-					)
-					performAudit(selectedContract, ++retryCount)
-					return
-				} else {
-					throw new Error("Failed to retrieve audits or contract type")
-				}
-			}
-
-			const score = await getScoreOfContract(
-				audits.data?.map((auditData) => auditData.vulnerabilityType)
-			)
-
-			if (score.status !== 201) {
-				if (retryCount < 3) {
-					console.log(`Failed to retrieve score, trying again retry count ${++retryCount}`)
-					performAudit(selectedContract, ++retryCount)
-					return
-				} else {
-					throw new Error("Failed to retrieve score")
-				}
-			}
-
-			setAudits(audits.data)
-			setContractType(contractType.data)
-			setScore(+score.data / 1e3)
-
-			setPageState(PageState.mintNft)
-		} catch (error) {
-			console.error(`performAudit error: ${error.message}`)
-		} finally {
-			setLoading(false)
-		}
-	}
-
-	// TODO: retrieve the contractAddress to audit from user input
-	const contractAddressToAudit = (contractAddress) => {
-    // Do something with the contractAddress, such as storing it in state or passing it to another component
-    console.log('Contract Address:', contractAddress);
-  };
-	const contractSecurityData = {    
+	const contractSecurityData = {
 		// "good-erc20" has to be provided to work for the dex
 		// but that is not crucial here, as the SmartContractNFT minted here
 		// will not be used in the DEX example.
@@ -135,11 +39,7 @@ export default function Dashboard() {
 		contractType: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(contractType)),
 		// just use a default value here or from the input
 		score: 50,
-    
 	}
-  console.log(contractType)
-
-  console.log('Contract Security Data:', contractSecurityData);
 	const chainId = useChainId()
 	const smartContractNftAddress = chainIdToAdresses[chainId]?.SmartContractNFT
 
@@ -612,10 +512,13 @@ export default function Dashboard() {
 			},
 		],
 		functionName: "mint",
-		args: [contractAddressToAudit, contractSecurityData],
+		args: [contractAddress, contractSecurityData],
 	})
 
-	const { write, isSuccess } = useContractWrite(config)
+	console.log("contractAddress", contractAddress)
+	console.log("smartContractNft", smartContractNftAddress)
+
+	const { write, isSuccess, error } = useContractWrite(config)
 
 	// function that gets called when clicking mint
 	async function onMint() {
@@ -627,6 +530,8 @@ export default function Dashboard() {
 
 			// maybe you have to call the onSubmit function here again,
 			// if it works the same way
+		} else if (error) {
+			console.log("Error while minting Audit: ", error)
 		}
 	}
 
@@ -676,34 +581,20 @@ export default function Dashboard() {
 
 				break
 
-			/*case PageState.performAudit:
-        content = (
-          <PerformAudit
-            getContractsLoading={getContractsLoading}
-            contracts={contracts}
-            setSelectedContract={setSelectedContract}
-            selectedContract={selectedContract}
-            performAudit={performAudit}
-            loading={loading}
-            loaded={getContractsLoaded}
-          />
-        )
-        break*/
-
 			case PageState.mintNft:
 				content = (
 					<MintNft
-						contract={selectedContract}
-						loading={loading}
-						score={score}
-						audits={audits}
+						contract={contractAddress}
+						loading={false}
+						score={0}
+						audits={[]}
 						mintNft={onMint}
 					/>
 				)
 				break
 
 			case PageState.mintSuccess:
-				content = <MintSuccess hash={success.hash} contract={selectedContract} />
+				content = <MintSuccess hash={success.hash} contract={contractAddress} />
 				break
 		}
 
@@ -714,8 +605,6 @@ export default function Dashboard() {
 		<div className="h-screen w-screen">
 			<NavBar />
 			<main className=" flex min-h-screen flex-col items-center justify-between p-24">
-				{error && <div className="text-red-500 text-xl">{error}</div>}
-
 				{renderContent()}
 
 				{success.show && <Confetti width={width} height={height} />}

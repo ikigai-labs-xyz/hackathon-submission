@@ -1,59 +1,54 @@
-.Footer-Section{
+.Footer-Section {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: top;
+	padding: fit-content;
+	padding-top: 30px;
+	gap: 100px;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: top;
-    padding: fit-content;
-    padding-top: 30px;
-    gap: 100px;
- 
-    color: white;
-    background: #000000;
+	color: white;
+	background: #000000;
 }
 
-.h2{
-    font-style: normal;
-    font-weight: 800;
-    font-size: 20px;
-    line-height: 24px;
+.h2 {
+	font-style: normal;
+	font-weight: 800;
+	font-size: 20px;
+	line-height: 24px;
 
-    color: #C2C2C2;
+	color: #c2c2c2;
 
-    margin-bottom: 15px;
-
+	margin-bottom: 15px;
 }
 
 .h3 {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 19px;
-    
-    color: #8594AB;
-  }
+	font-style: normal;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 19px;
 
-
-.Socials{
-font-style: normal;
-font-weight: 800;
-font-size: 20px;
-line-height: 24px;
-
-color: #C2C2C2;
-
+	color: #8594ab;
 }
 
-.Logo-Container{
-width: 168px;
-height: 207px;
-left: 4px;
-top: 3px;
+.Socials {
+	font-style: normal;
+	font-weight: 800;
+	font-size: 20px;
+	line-height: 24px;
 
+	color: #c2c2c2;
 }
 
-.footer_logo{
-    width: 50px;
-    height: 50px;
-    margin-bottom: 15px;
+.Logo-Container {
+	width: 168px;
+	height: 207px;
+	left: 4px;
+	top: 3px;
+}
+
+.footer_logo {
+	width: 50px;
+	height: 50px;
+	margin-bottom: 15px;
 }
