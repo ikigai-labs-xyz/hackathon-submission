@@ -72,8 +72,6 @@ export default memo(function CurrencySearchModal({
         // always show modal
         // && !userAddedTokens.find((token) => token.equals(currency) )
       ) {
-        console.log("chainId", chainId, urls, urls[chainId].SmartContractNFT)
-
         if (!chainId || !urls[chainId] || !urls[chainId].SmartContractNFT) {
           throw new Error("No smart contract deployment found")
         }
