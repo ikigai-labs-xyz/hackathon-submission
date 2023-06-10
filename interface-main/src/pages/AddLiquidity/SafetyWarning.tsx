@@ -249,16 +249,20 @@ export default function SafetyWarning({
     token1Warning &&
     (token1Unsupported || !(token2Warning && token2Unsupported))
   ) {
-    logos.push(<CurrencyLogo currency={token1} size="48px" />)
-    urls.push(<ExplorerView token={token1} />)
+    logos.push(
+      <CurrencyLogo key={token1.address} currency={token1} size="48px" />
+    )
+    urls.push(<ExplorerView key={token1.address} token={token1} />)
   }
   if (
     token2 &&
     token2Warning &&
     (token2Unsupported || !(token1Warning && token1Unsupported))
   ) {
-    logos.push(<CurrencyLogo currency={token2} size="48px" />)
-    urls.push(<ExplorerView token={token2} />)
+    logos.push(
+      <CurrencyLogo key={token2.address} currency={token2} size="48px" />
+    )
+    urls.push(<ExplorerView key={token2.address} token={token2} />)
   }
 
   const plural = logos.length > 1
