@@ -24,14 +24,9 @@ const contractsConfig = {
   },
 }
 const networkConfig = {
-  137: {
-    name: "polygon",
+  11155111: {
+    name: "sepolia",
     contracts: contractsConfig,
-  },
-  80001: {
-    name: "mumbai",
-    contracts: contractsConfig,
-    forTests: [],
   },
   31337: {
     name: "hardhat",

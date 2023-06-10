@@ -8,7 +8,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deployer } = await getNamedAccounts()
   const chainId = network.config.chainId
   const isDevelopmentChain = constants.developmentChains.includes(network.name)
-  const waitBlockConfirmations = isDevelopmentChain ? 1 : network.config.blockConfirmations
   const auditorNFT = await ethers.getContract("AuditorNFT", deployer)
 
   const contractConfig = networkConfig[chainId].contracts.SmartContractNFT
@@ -20,7 +19,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     from: deployer,
     args: constructorArguments,
     log: true,
-    waitConfirmations: waitBlockConfirmations,
+    waitConfirmations: network.config.blockConfirmations || 1,
   })
   log(`${contractName} (${deployedContract.address}) deployed)`)
 

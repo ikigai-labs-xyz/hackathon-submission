@@ -9,7 +9,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const chainId = network.config.chainId
   const isDevelopmentChain = constants.developmentChains.includes(network.name)
 
-  const waitBlockConfirmations = isDevelopmentChain ? 1 : VERIFICATION_BLOCK_CONFIRMATIONS
   const contractConfig = networkConfig[chainId].contracts.AuditorNFT
   const contractName = contractConfig.name
 
@@ -19,12 +18,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     from: deployer,
     args: args,
     log: true,
-    waitConfirmations: waitBlockConfirmations,
+    waitConfirmations: network.config.blockConfirmations || 1,
   })
   log(`${contractName} (${deployedContract.address}) deployed)`)
 
   if (!isDevelopmentChain && process.env.EXPLORER_API_KEY) {
-    await verify(deployedContract.address, constructorArguments, network.name)
+    await verify(deployedContract.address, args, network.name)
   }
 
   log("------------------------------")
