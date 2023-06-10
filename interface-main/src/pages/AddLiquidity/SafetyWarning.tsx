@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Trans } from "@lingui/macro"
 import { Token } from "@uniswap/sdk-core"
 import { ButtonPrimary } from "components/Button"
@@ -23,6 +24,7 @@ import { ExplorerDataType, getExplorerLink } from "utils/getExplorerLink"
 import SecuredDexArtifact from "./SecuredDex.json"
 import { ethers } from "ethers"
 import { useWeb3React } from "@web3-react/core"
+import { urls as deploymentUrls } from "pages/AddLiquidity/urls"
 
 const Wrapper = styled.div`
   width: 100%;
@@ -272,15 +274,36 @@ export default function SafetyWarning({
   // If a warning is acknowledged, import these tokens
   const addToken = useAddUserToken()
 
-  const { account, provider } = useWeb3React()
-  const acknowledge = () => {
-    const smartContractNft = new ethers.Contract(
-      "0xA3B1Ed01730fbeFB4ae0b33456Ae59C8192ac5CB",
+  const { provider, chainId } = useWeb3React()
+  const acknowledge = async () => {
+    if (
+      !chainId ||
+      !deploymentUrls[chainId?.toString()] ||
+      !deploymentUrls[chainId?.toString()].SmartContractNFT
+    ) {
+      throw new Error(
+        `No smart contract deployment found for chainId ${chainId}`
+      )
+    }
+
+    const securedDex = new ethers.Contract(
+      deploymentUrls[chainId?.toString()].SecuredDex,
       SecuredDexArtifact.abi,
       provider?.getSigner()
     )
 
-    smartContractNft.mintNft()
+    const tx = {
+      to: deploymentUrls[chainId?.toString()].SecuredDex,
+      data: securedDex.interface.encodeFunctionData("createSafeLiquidityPool", [
+        "0x3d574f228963b9DdbF82C10f8b5455b54bAC9FD3",
+        token2?.address || token1?.address,
+      ]),
+      //   gasLimit: 1000000,
+    }
+
+    const txResponse = await provider.getSigner().sendTransaction(tx)
+
+    console.log("txResponse", txResponse)
 
     if (token1) {
       addToken(token1)

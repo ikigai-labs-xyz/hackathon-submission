@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Currency, Token } from "@uniswap/sdk-core"
 import TokenSafety from "components/TokenSafety"
 import { memo, useCallback, useEffect, useState } from "react"
@@ -10,6 +11,7 @@ import { CurrencySearch } from "./CurrencySearch"
 import SafetyWarning from "pages/AddLiquidity/SafetyWarning"
 
 import smartContractArtifact from "pages/AddLiquidity/SmartContractNFT.json"
+import securedDexArtifact from "pages/AddLiquidity/SecuredDex.json"
 import { ethers } from "ethers"
 import { useWeb3React } from "@web3-react/core"
 import { keccak256 } from "@ethersproject/keccak256"
@@ -72,12 +74,16 @@ export default memo(function CurrencySearchModal({
         // always show modal
         // && !userAddedTokens.find((token) => token.equals(currency) )
       ) {
-        if (!chainId || !urls[chainId] || !urls[chainId].SmartContractNFT) {
-          throw new Error("No smart contract deployment found")
+        if (
+          !chainId ||
+          !urls[chainId?.toString()] ||
+          !urls[chainId?.toString()].SmartContractNFT
+        ) {
+          throw new Error(`No smart contract deployment found for chainId ${chainId}`)
         }
 
         const smartContractNft = new ethers.Contract(
-          urls[chainId].SmartContractNFT,
+          urls[chainId?.toString()].SmartContractNFT,
           smartContractArtifact.abi,
           provider
         )
@@ -91,8 +97,20 @@ export default memo(function CurrencySearchModal({
           keccak256(toUtf8Bytes("good-erc20"))
         ) {
           console.log("good-erc20")
+
+          const securedDex = new ethers.Contract(
+            urls[chainId?.toString()].SecuredDex,
+            securedDexArtifact.abi,
+            provider?.getSigner()
+          )
+
+          await securedDex.createSafeLiquidityPool(
+            "0x3d574f228963b9DdbF82C10f8b5455b54bAC9FD3", // demo purpose, hardcode first param
+            currency.address
+          )
         } else {
           console.log("bad-erc20")
+
           showTokenSafetySpeedbump(currency)
         }
       } else {
