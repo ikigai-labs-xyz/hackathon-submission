@@ -2,9 +2,8 @@ const { ethers } = require("hardhat")
 
 const constants = {
   developmentChains: ["hardhat", "localhost"],
-  testNetChains: ["mumbai"],
+  testNetChains: ["sepolia"],
   NULL_ADDRESS: ethers.constants.AddressZero,
-  FRONTEND_FILE_PATH: "",
 }
 
 const scriptsConfig = {}
@@ -21,6 +20,22 @@ const contractsConfig = {
   SmartContractNFT: {
     name: "SmartContractNFT",
     args: ["SmartContractNFT", "SmartContractNFT"],
+  },
+  SecuredDex: {
+    name: "SecuredDex",
+    args: [],
+  },
+  BadERC20: {
+    name: "BadERC20",
+    args: [],
+  },
+  GoodERC20_1: {
+    name: "GoodERC20_1",
+    args: [],
+  },
+  GoodERC20_2: {
+    name: "GoodERC20_2",
+    args: [],
   },
 }
 const networkConfig = {
