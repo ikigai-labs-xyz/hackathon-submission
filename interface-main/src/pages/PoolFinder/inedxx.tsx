@@ -1,35 +1,40 @@
-import { Trans } from '@lingui/macro';
-import { Trace } from '@uniswap/analytics';
-import { InterfacePageName } from '@uniswap/analytics-events';
-import {
-  Currency, CurrencyAmount, Token
-} from '@uniswap/sdk-core';
-import { useWeb3React } from '@web3-react/core';
-import JSBI from 'jsbi';
-import { useCallback, useEffect, useState } from 'react';
-import { Plus } from 'react-feather';
-import { useLocation } from 'react-router';
-import { Text } from 'rebass';
+import { Trans } from '@lingui/macro'
+import { Trace } from '@uniswap/analytics'
+import { InterfacePageName } from '@uniswap/analytics-events'
+import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { useWeb3React } from '@web3-react/core'
+import JSBI from 'jsbi'
+import { useCallback, useEffect, useState } from 'react'
+import { Plus } from 'react-feather'
+import { useLocation } from 'react-router'
+import { Text } from 'rebass'
 
-import { ButtonDropdownLight } from '../../components/Button';
-import { LightCard, BlueCard } from '../../components/Card';
-import { AutoColumn, ColumnCenter } from '../../components/Column';
-import CurrencyLogo from '../../components/Logo/CurrencyLogo';
-import { FindPoolTabs } from '../../components/NavigationTabs';
-import { MinimalPositionCard } from '../../components/PositionCard';
-import Row from '../../components/Row';
-import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal';
-import { SwitchLocaleLink } from '../../components/SwitchLocaleLink';
-import { nativeOnChain } from '../../constants/tokens';
-import { PairState, useV2Pair } from '../../hooks/useV2Pairs';
-import { useTokenBalance } from '../../state/connection/hooks';
-import { usePairAdder } from '../../state/user/hooks';
-import { StyledInternalLink, ThemedText } from '../../theme';
-import { currencyId } from '../../utils/currencyId';
-import AppBody from '../AppBody';
-import { Dots } from '../Pool/styleds';
-import ErrorPopup from '../../components/Popups/ErrorPopup';
-import ethers from 'ethers';
+import { ButtonDropdownLight } from '../../components/Button'
+import { LightCard } from '../../components/Card'
+import { BlueCard } from '../../components/Card'
+import { AutoColumn, ColumnCenter } from '../../components/Column'
+import CurrencyLogo from '../../components/Logo/CurrencyLogo'
+import { FindPoolTabs } from '../../components/NavigationTabs'
+import { MinimalPositionCard } from '../../components/PositionCard'
+import Row from '../../components/Row'
+import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
+import { SwitchLocaleLink } from '../../components/SwitchLocaleLink'
+import { nativeOnChain } from '../../constants/tokens'
+import { PairState, useV2Pair } from '../../hooks/useV2Pairs'
+import { useTokenBalance } from '../../state/connection/hooks'
+import { usePairAdder } from '../../state/user/hooks'
+import { StyledInternalLink } from '../../theme'
+import { ThemedText } from '../../theme'
+import { currencyId } from '../../utils/currencyId'
+import AppBody from '../AppBody'
+import { Dots } from '../Pool/styleds'
+
+import ErrorPopup from '../../components/Popups/ErrorPopup'
+import { useContractEvent } from 'wagmi'
+import ethers from 'ethers'
+
+
+
 
 enum Fields {
   TOKEN0 = 0,
@@ -37,54 +42,84 @@ enum Fields {
 }
 
 function useQuery() {
-  return new URLSearchParams(useLocation().search);
+  return new URLSearchParams(useLocation().search)
 }
 
-const CONTRACT_ADDRESS = "0x..."; // Put the contract address here
-const CONTRACT_ABI = [...]; // Put the contract ABI array here
-
 export default function PoolFinder() {
-  const query = useQuery();
-  const { account, chainId, library } = useWeb3React();
-  const [showSearch, setShowSearch] = useState<boolean>(false);
-  const [activeField, setActiveField] = useState<number>(Fields.TOKEN1);
-  const [currency0, setCurrency0] = useState<Currency | null>(() => (chainId ? nativeOnChain(chainId) : null));
-  const [currency1, setCurrency1] = useState<Currency | null>(null);
-  const [pairState, pair] = useV2Pair(currency0 ?? undefined, currency1 ?? undefined);
-  const addPair = usePairAdder();
-  const [contract, setContract] = useState<null | ethers.Contract>(null);
-  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const query = useQuery()
 
+  const { account, chainId } = useWeb3React()
+
+  const [showSearch, setShowSearch] = useState<boolean>(false)
+  const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
+
+  const [currency0, setCurrency0] = useState<Currency | null>(() => (chainId ? nativeOnChain(chainId) : null))
+  const [currency1, setCurrency1] = useState<Currency | null>(null)
+
+  const [pairState, pair] = useV2Pair(currency0 ?? undefined, currency1 ?? undefined)
+  const addPair = usePairAdder()
   useEffect(() => {
     if (pair) {
-      addPair(pair);
+      addPair(pair)
     }
-  }, [pair, addPair]);
+  }, [pair, addPair])
 
-  useEffect(() => {
-    if (library) {
-      const contractInstance = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, library.getSigner());
-      setContract(contractInstance);
-    }
-  }, [library]);
+  const validPairNoLiquidity: boolean =
+    pairState === PairState.NOT_EXISTS ||
+    Boolean(
+      pairState === PairState.EXISTS &&
+        pair &&
+        JSBI.equal(pair.reserve0.quotient, JSBI.BigInt(0)) &&
+        JSBI.equal(pair.reserve1.quotient, JSBI.BigInt(0))
+    )
+
+  const position: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
+  const hasPosition = Boolean(position && JSBI.greaterThan(position.quotient, JSBI.BigInt(0)))
+
+  const handleCurrencySelect = useCallback(
+    (currency: Currency) => {
+      if (activeField === Fields.TOKEN0) {
+        setCurrency0(currency)
+      } else {
+        setCurrency1(currency)
+      }
+    },
+    [activeField]
+  )
+
+  const handleSearchDismiss = useCallback(() => {
+    setShowSearch(false)
+  }, [setShowSearch])
+
+  const prerequisiteMessage = (
+    <LightCard padding="45px 10px">
+      <Text textAlign="center">
+        {!account ? (
+          <Trans>Connect to a wallet to find pools</Trans>
+        ) : (
+          <Trans>Select a token to find your v2 liquidity.</Trans>
+        )}
+      </Text>
+    </LightCard>
+  )
+
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   useEffect(() => {
     const checkContractSecurity = async () => {
       try {
-        if (contract) {
-          const contractSecurity = await contract.getContractSecurity('0x5FbDB2315678afecb367f032d93F642f64180aa3');
-          if (contractSecurity.score === 0) {
-            setShowErrorPopup(true);
-          }
+        const contractSecurity = await contract.getContractSecurity('0x5FbDB2315678afecb367f032d93F642f64180aa3');
+        if (contractSecurity.score === 0) {
+          setShowErrorPopup(true);
         }
       } catch (error) {
         console.error('Error fetching contract security', error);
       }
     };
-
+    
     checkContractSecurity();
-  }, [contract]);
-
+  }, []);
+  
   const contract = new ethers.Contact("addresse", abi, ethersProvider)
 
   const { library } = useWeb3React();
@@ -96,6 +131,7 @@ export default function PoolFinder() {
             setContract(contractInstance);
         }
     }, [library]);
+
 
   return (
     <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression>
@@ -235,5 +271,5 @@ export default function PoolFinder() {
         <SwitchLocaleLink />
       </>
     </Trace>
-  );
+  )
 }

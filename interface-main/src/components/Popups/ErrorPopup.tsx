@@ -15,7 +15,7 @@ const ErrorPopup: FC<ErrorPopupProps> = ({ show, onClose }) => {
     return (
         <div className="error-popup">
             <div className="error-popup-content">
-                <div className="error-textbox">Error Message 1</div>
+                <div className="error-textbox">failed interaction</div>
                 <div className="error-textbox">Error Message 2</div>
                 <div className="error-textbox">Error Message 3</div>
                 <button className="error-close-button" onClick={onClose}>Close</button>
