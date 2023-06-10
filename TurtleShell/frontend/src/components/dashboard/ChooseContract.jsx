@@ -11,7 +11,7 @@ export const ChooseContract = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ ContractAdress: contractAddress });
+    onSubmit(contractAddress);
   };
 
   return (

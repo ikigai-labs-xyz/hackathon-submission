@@ -123,18 +123,23 @@ export default function Dashboard() {
 	}
 
 	// TODO: retrieve the contractAddress to audit from user input
-	const contractAddressToAudit = ""
-	const contractSecurityData = {
-		contractAddress: contractAddressToAudit,
+	const contractAddressToAudit = (contractAddress) => {
+    // Do something with the contractAddress, such as storing it in state or passing it to another component
+    console.log('Contract Address:', contractAddress);
+  };
+	const contractSecurityData = {    
 		// "good-erc20" has to be provided to work for the dex
 		// but that is not crucial here, as the SmartContractNFT minted here
 		// will not be used in the DEX example.
 		// You can theoretically mint any type here
-		type: ethers.utils.keccak256(ethers.utils.toUtf8Bytes("good-erc20")),
+		contractType: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(contractType)),
 		// just use a default value here or from the input
 		score: 50,
+    
 	}
+  console.log(contractType)
 
+  console.log('Contract Security Data:', contractSecurityData);
 	const chainId = useChainId()
 	const smartContractNftAddress = chainIdToAdresses[chainId]?.SmartContractNFT
 
@@ -651,8 +656,8 @@ export default function Dashboard() {
 			case PageState.chooseContract:
 				content = (
 					<ChooseContract
-						onSubmit={(values) => {
-							setContractAddress(values.ContractAdress)
+						onSubmit={(contractAddress) => {
+							setContractAddress(contractAddress)
 							setPageState(PageState.auditorForm)
 						}}
 					/>
@@ -662,8 +667,8 @@ export default function Dashboard() {
 			case PageState.auditorForm:
 				content = (
 					<AuditorForm
-						onSubmit={() => {
-							setContractType()
+						onSubmit={(contractType) => {
+							setContractType(contractType)
 							setPageState(PageState.mintNft)
 						}}
 					/>

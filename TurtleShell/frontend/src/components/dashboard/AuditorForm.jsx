@@ -2,11 +2,18 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { BsArrowRightShort } from 'react-icons/bs';
 import './Dashboard.css';
+import { useState } from 'react';
 
-const AuditorForm = ({ handleFormSubmit }) => 
-(   // accept the onSubmit prop
+const AuditorForm = ({ handleFormSubmit }) => {
+   // accept the onSubmit prop
+  const [contractType, setContractType] = useState("")
 
-qdpqcüppkqdüpk
+ onchange = (contractType) => {
+    setContractType(contractType.target.value);
+  };
+
+  
+
 return (
 <>
   <div>
@@ -15,22 +22,23 @@ return (
   </div>
     <div className='submit'>
     <Formik
-      initialValues={{ color: '' }}
+      initialValues={{ contractType: '' }}
       validationSchema={Yup.object({
         color: Yup.string()
           .required('Required'),
       })}
-      onSubmit={handleFormSubmit}   // use the onSubmit prop here
+      onSubmit={() => handleFormSubmit(contractType)}   // use the onSubmit prop here
+
     >
-      <Form>
+      <Form onChange={setContractType(contractType.target.value)}>
         <label htmlFor="color"></label>
-        <Field as="select" name="Type">
+        <Field as="select" name="color">
           <option value="#">Select</option>
-          <option value="GOOD_ERC-2O">Good ERC-20</option>
-          <option value="Good_ERC-20">Bad ERC-20</option>
-          <option value="FlashLoan">Flash Loan</option>
-          <option value="ERC-1155">ERC-1155</option>
-          <option value="ERC-721">ERC-721</option>
+          <option value={good_erc20}>Good ERC-20</option>
+          <option value={bad_erc20}>Bad ERC-20</option>
+          <option value={flashloan}>Flash Loan</option>
+          <option value={erc_1155}>ERC-1155</option>
+          <option value={erc_721}>ERC-721</option>
         </Field>
 
         <ErrorMessage name="color" component="div" />
@@ -50,6 +58,6 @@ return (
       </div>
   </>
   )
-);
+};
 
 export default AuditorForm;
