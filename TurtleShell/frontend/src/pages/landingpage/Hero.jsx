@@ -7,7 +7,7 @@ function Hero() {
     <div className="hero">
       <div className="section1">
       <div className="">
-        <h1>AI Smart Contract Security Audits</h1>
+        <h1>Scaling Ethereum trough On-Chain Firewalls</h1>
         <h2>Turtleshell brings Smart Contract security data on-chain, providing transparency, composability, and accessibility where it matters most.</h2>
       </div>
       <div className="hero_image">
