@@ -12,7 +12,6 @@ const Landingpage = () => (
 	<>
 	<div className="borders">
 	  <Navbar />
-	  <Logo/>
 	  </div>
 	  <Hero/>
 	  <div className="borders">

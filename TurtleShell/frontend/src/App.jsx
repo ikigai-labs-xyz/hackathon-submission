@@ -7,6 +7,7 @@ import "@rainbow-me/rainbowkit/styles.css"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
 import {
+  sepolia,
   filecoinHyperspace,
   optimismGoerli,
   polygonMumbai,
@@ -61,6 +62,7 @@ const mantleTestnet = {
 function App() {
   const { chains, provider } = configureChains(
     [
+      sepolia,
       polygonMumbai,
       optimismGoerli,
       linea,

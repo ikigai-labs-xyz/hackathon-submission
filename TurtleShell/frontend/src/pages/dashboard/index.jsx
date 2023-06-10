@@ -1,13 +1,16 @@
-import { useState } from "react"
-import Confetti from "react-confetti"
-import { useAccount, useSigner } from "wagmi"
-import MintNft from "../../components/dashboard/MintNft"
-import NavBar from "../../components/dashboard/Navbar"
-import NoWallet from "../../components/dashboard/NoWallet"
-import PerformAudit from "../../components/dashboard/PerformAudit"
-import useGetContracts from "../../hooks/useGetContractsOfWalletAddress"
-import useWindowSize from "../../hooks/useWindowSize"
-import AuditorForm from "../../components/dashboard/AuditorForm"
+import { useState } from "react";
+import Confetti from "react-confetti";
+import { useAccount, useSigner } from "wagmi";
+import MintNft from "../../components/dashboard/MintNft";
+import NavBar from "../../components/dashboard/Navbar";
+import NoWallet from "../../components/dashboard/NoWallet";
+import useGetContracts from "../../hooks/useGetContractsOfWalletAddress";
+import useWindowSize from "../../hooks/useWindowSize";
+import AuditorForm from "../../components/dashboard/AuditorForm";
+import AuditorSBT from "../../components/dashboard/AuditorSBT";
+import MintSuccess from "../../components/dashboard/MintSuccess";
+import { ChooseContract } from "../../components/dashboard/ChooseContract";
+
 import {
   getAuditsOfContract,
   getBackendSignature,
@@ -17,26 +20,26 @@ import {
   uploadToIpfs,
 } from "../../utils/api"
 import { getTurtleTokenContract } from "../../utils/contracts"
-import MintSuccess from "../../components/dashboard/MintSuccess"
 
 const PageState = {
-  initialForm: "initialForm",
+  auditorSBT: "auditorSBT",
+  chooseContract: "chooseContract",
+  auditorForm: "auditorForm",
   performAudit: "performAudit",
   mintNft: "mintNft",
   mintSuccess: "mintSuccess",
 }
 
 export default function Dashboard() {
-  const [pageState, setPageState] = useState(PageState.initialForm)
+  const [pageState, setPageState] = useState(PageState.auditorSBT)
+  const [contractAddress, setContractAddress] = useState("")
+
+
 
   const { width, height } = useWindowSize()
   const { address } = useAccount()
   const { data: signer } = useSigner()
 
-  const handleFormSubmit = (values) => {
-    // Handle form submission here, then change page state
-    setPageState(PageState.performAudit);
-  }
 
   const [selectedContract, setSelectedContract] = useState({
     address: "",
@@ -218,11 +221,46 @@ export default function Dashboard() {
     }
 
     switch (pageState) {
-      case PageState.initialForm:
-        content = <AuditorForm onSubmit={handleFormSubmit} />;
+
+      case PageState.auditorSBT:
+        content = (
+          <AuditorSBT
+  onSubmit={(action) => {
+    if (action === "mint badge") {
+      // Handle the "mint badge" action here
+      setContractAddress("contract address"); // Set the contract address accordingly
+      setPageState(PageState.chooseContract);
+    }
+  }}
+/>
+
+        )
         break
 
-      case PageState.performAudit:
+        case PageState.chooseContract:
+          content = (
+            <ChooseContract
+              onSubmit={(values) => {
+                setContractAddress(values.ContractAdress)
+                setPageState(PageState.auditorForm)
+              }}
+            />
+          )
+          break
+
+          case PageState.auditorForm:
+            content = (
+              <AuditorForm
+                onSubmit={() => {
+                  setContractType();
+                  setPageState(PageState.mintNft);
+                }}
+              />
+            );
+          
+        break
+
+      /*case PageState.performAudit:
         content = (
           <PerformAudit
             getContractsLoading={getContractsLoading}
@@ -234,7 +272,7 @@ export default function Dashboard() {
             loaded={getContractsLoaded}
           />
         )
-        break
+        break*/
 
       case PageState.mintNft:
         content = (
