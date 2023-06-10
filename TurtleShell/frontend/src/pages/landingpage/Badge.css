@@ -1,0 +1,130 @@
+.section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.section-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin-top:1rem;
+}
+
+.section-image img {
+  width: 45%;
+  height: fit-content; /* Increase the max height as needed */
+  margin-top:2rem;
+}
+
+.section-text {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.section-text h1 {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 58px;
+  color: #FFFFFF;
+}
+
+.section-text h3 {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #8594AB;
+  margin-top: 20px;
+}
+
+.section-text h2 {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+  color: #FFFFFF;
+  margin-top: 80px;
+}
+
+.section-text h3:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive Styles */
+
+/* Desktop */
+@media (max-width: 1200px) {
+  .section {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 40px;
+    padding: 0;
+  }
+
+  .section-image {
+    margin-bottom: 20px;
+  }
+
+  .section-text h1 {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .section-text h3 {
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 10px;
+  }
+
+  .section-text h2 {
+    font-size: 32px;
+    line-height: 40px;
+    margin-top: 60px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .section-text h1 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .section-text h3 {
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 10px;
+  }
+
+  .section-text h2 {
+    font-size: 28px;
+    line-height: 36px;
+    margin-top: 40px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .section-text h1 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .section-text h3 {
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 10px;
+  }
+
+  .section-text h2 {
+    font-size: 22px;
+    line-height: 28px;
+    margin-top: 40px;
+  }
+}

@@ -1,0 +1,55 @@
+.logo {
+    color: #DBDBDB;
+    padding: 10px 80px;
+    text-align: center;
+  
+    margin-top: 5px;
+    margin-bottom: 0px;
+  
+    
+  }
+  
+
+  .section_logo {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+  
+  .logo h1 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 77px;
+    margin: 0;
+  }
+  
+  .logo h2 {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    margin-top:40px;
+    margin-left: 140px;
+    margin-right: 140px;
+    color: #8594AB;
+  }
+  
+  @media (max-width: 768px) {
+    .logo h1 {
+      font-size: 48px;
+      line-height: 58px;
+    }
+    
+    .logo h2 {
+      font-size: 20px;
+      line-height: 24px;
+      margin: 20px 0 0;
+    }
+  }
+  
