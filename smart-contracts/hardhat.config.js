@@ -48,6 +48,50 @@ module.exports = {
       chainId: 11155111,
       blockConfirmations: 1,
     },
+    optimism: {
+      url: "https://optimism-goerli.publicnode.com",
+      accounts: [SEPOLIA_PRIVATE_KEY],
+      saveDeployments: true,
+      chainId: 420,
+      blockConfirmations: 1,
+    },
+    taiko: {
+      url: "https://rpc.test.taiko.xyz",
+      accounts: [SEPOLIA_PRIVATE_KEY],
+      saveDeployments: true,
+      chainId: 167005,
+      blockConfirmations: 1,
+    },
+    gnosis: {
+      url: "https://rpc.chiadochain.net",
+      accounts: [SEPOLIA_PRIVATE_KEY],
+      saveDeployments: true,
+      chainId: 10200,
+      blockConfirmations: 1,
+    },
+    scroll: {
+      url: "https://scroll-alphanet.public.blastapi.io",
+      accounts: [SEPOLIA_PRIVATE_KEY],
+      saveDeployments: true,
+      chainId: 534353,
+      blockConfirmations: 1,
+    },
+    mantle: {
+      // faucet did not return tokens yet
+      url: "https://rpc.testnet.mantle.xyz",
+      accounts: [SEPOLIA_PRIVATE_KEY],
+      saveDeployments: true,
+      chainId: 5001,
+      blockConfirmations: 1,
+    },
+    base: {
+      // faucet does not work
+      url: "https://goerli.base.org",
+      accounts: [SEPOLIA_PRIVATE_KEY],
+      saveDeployments: true,
+      chainId: 84531,
+      blockConfirmations: 1,
+    },
   },
   namedAccounts: {
     deployer: {

@@ -43,6 +43,22 @@ const networkConfig = {
     name: "sepolia",
     contracts: contractsConfig,
   },
+  420: {
+    name: "optimism",
+    contracts: contractsConfig,
+  },
+  10200: {
+    name: "gnosis",
+    contracts: contractsConfig,
+  },
+  167005: {
+    name: "taiko",
+    contracts: contractsConfig,
+  },
+  534353: {
+    name: "scroll",
+    contracts: contractsConfig,
+  },
   31337: {
     name: "hardhat",
     contracts: contractsConfig,
