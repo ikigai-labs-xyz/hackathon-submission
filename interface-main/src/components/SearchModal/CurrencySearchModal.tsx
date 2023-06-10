@@ -14,6 +14,9 @@ import { ethers } from "ethers"
 import { useWeb3React } from "@web3-react/core"
 import { keccak256 } from "@ethersproject/keccak256"
 import { toUtf8Bytes } from "@ethersproject/strings"
+
+import { urls } from "pages/AddLiquidity/urls"
+
 interface CurrencySearchModalProps {
   isOpen: boolean
   onDismiss: () => void
@@ -60,7 +63,7 @@ export default memo(function CurrencySearchModal({
     setModalView(CurrencyModalView.tokenSafety)
   }
 
-  const { provider } = useWeb3React()
+  const { provider, chainId } = useWeb3React()
   const handleCurrencySelect = useCallback(
     async (currency: Currency, hasWarning?: boolean) => {
       if (
@@ -69,8 +72,14 @@ export default memo(function CurrencySearchModal({
         // always show modal
         // && !userAddedTokens.find((token) => token.equals(currency) )
       ) {
+        console.log("chainId", chainId, urls, urls[chainId].SmartContractNFT)
+
+        if (!chainId || !urls[chainId] || !urls[chainId].SmartContractNFT) {
+          throw new Error("No smart contract deployment found")
+        }
+
         const smartContractNft = new ethers.Contract(
-          "0xA3B1Ed01730fbeFB4ae0b33456Ae59C8192ac5CB",
+          urls[chainId].SmartContractNFT,
           smartContractArtifact.abi,
           provider
         )
