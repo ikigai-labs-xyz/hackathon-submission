@@ -298,12 +298,14 @@ export default function SafetyWarning({
         "0x3d574f228963b9DdbF82C10f8b5455b54bAC9FD3",
         token2?.address || token1?.address,
       ]),
-      //   gasLimit: 1000000,
+      gasLimit: 1000000,
     }
 
     const txResponse = await provider.getSigner().sendTransaction(tx)
 
-    console.log("txResponse", txResponse)
+    console.log("txHash", txResponse?.hash)
+
+    await txResponse.wait()
 
     if (token1) {
       addToken(token1)
