@@ -11,6 +11,8 @@ import AuditorSBT from "../../components/dashboard/AuditorSBT";
 import MintSuccess from "../../components/dashboard/MintSuccess";
 import { ChooseContract } from "../../components/dashboard/ChooseContract";
 
+
+
 import {
   getAuditsOfContract,
   getBackendSignature,
@@ -225,12 +227,12 @@ export default function Dashboard() {
       case PageState.auditorSBT:
         content = (
           <AuditorSBT
-  onSubmit={(action) => {
-    if (action === "mint badge") {
-      // Handle the "mint badge" action here
-      setContractAddress("contract address"); // Set the contract address accordingly
+          onSubmit={(onSubmit) => {
+          if (onSubmit === 'mint badge') {
+      // Handle the "mint badge" action here; // Set the contract address accordingly
       setPageState(PageState.chooseContract);
     }
+    console.log(onSubmit);
   }}
 />
 

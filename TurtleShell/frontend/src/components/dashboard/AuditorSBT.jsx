@@ -2,34 +2,53 @@ import React from 'react';
 import Spinner from '../Spinner';
 import { BsArrowRightShort } from 'react-icons/bs';
 
-import { usePrepareContractWrite, useContractWrite } from 'wagmi'
+import { usePrepareContractWrite, useContractWrite, useChainId, useAccount } from 'wagmi'
 import './Dashboard.css'
-import abi from './AuditorNFT.json'
+import { chainIdToAdresses } from '../../utils/chainMapping';
 
 const AuditorSBT = ({onSubmit}) => {
-  const handleButtonClick = () => {
-    // Handle button click here (currently empty)
-  };
+    const chainId = useChainId()
+    const {account} = useAccount()
+
   const {
     config,
     error: prepareError,
     isError: isPrepareError,
   } = usePrepareContractWrite({
-    address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
+    address: chainIdToAdresses[chainId].AuditorNFT,
     abi: [
       {
         name: 'mint',
         type: 'function',
         stateMutability: 'nonpayable',
-        inputs: [],
+        inputs: [
+            {
+              internalType: "address",
+              name: "auditor",
+              type: "address"
+            }
+          ],
         outputs: [],
       },
     ],
-    functionName: 'mint',
-  })
-  
-  const { write } = useContractWrite(config)
+    functionName: "mint",
+    args: [account],
 
+  })
+
+
+
+  const { write, isSuccess } = useContractWrite(config)
+
+  const handleButtonClick = async () => {
+    console.log(chainIdToAdresses[chainId].AuditorNFT)
+    write?.()
+    console.log(prepareError, write, isSuccess)
+
+    if (isSuccess) {
+      Promise.resolve(onSubmit('mint badge'))
+    }
+  };
 
   return (
     <div>
@@ -41,7 +60,7 @@ const AuditorSBT = ({onSubmit}) => {
       <div className="text-center">
         <button
           className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
-          disabled={!write} onClick={() => {onSubmit("mint badge")}}
+          onClick={() => {handleButtonClick(); }}
         >
           <div className="flex items-center">
             Mint Badge <BsArrowRightShort size={20} />

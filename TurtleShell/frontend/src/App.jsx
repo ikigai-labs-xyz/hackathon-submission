@@ -8,6 +8,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
 import {
   sepolia,
+  gnosis,
+  gnosisChiado,
   filecoinHyperspace,
   optimismGoerli,
   polygonMumbai,
@@ -63,6 +65,8 @@ function App() {
   const { chains, provider } = configureChains(
     [
       sepolia,
+      gnosis,
+      gnosisChiado,
       polygonMumbai,
       optimismGoerli,
       linea,
