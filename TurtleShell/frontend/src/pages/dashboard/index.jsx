@@ -520,7 +520,7 @@ export default function Dashboard() {
 		const tx = await writeAsync?.()
 		await tx.wait()
 
-		if (isError) {
+		if (!isError) {
 			setPageState(PageState.mintSuccess)
 		} else {
 			console.log("Error while minting Audit: ", error)
