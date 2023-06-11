@@ -9,7 +9,7 @@ const AuditorForm = ({ onSubmit, updateContractType }) => {
 	const [contractType, setContractType] = useState("")
 
 	return (
-		<>
+		<div className="bg-box">
 			<div>
 				<h1 className="h1">Auditor Form</h1>
 				<h2 className="h2">Type of Contract</h2>
@@ -45,7 +45,7 @@ const AuditorForm = ({ onSubmit, updateContractType }) => {
 
 			<div>
 				<button
-					className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
+					className="submit-button"
 					onClick={() => onSubmit()}
 				>
 					<div className="flex items-center">
@@ -54,8 +54,11 @@ const AuditorForm = ({ onSubmit, updateContractType }) => {
 					</div>
 				</button>
 			</div>
-		</>
+		</div>
 	)
 }
 
 export default AuditorForm
+
+
+// className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}

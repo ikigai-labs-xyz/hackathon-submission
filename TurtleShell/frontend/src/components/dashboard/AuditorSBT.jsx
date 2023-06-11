@@ -37,22 +37,24 @@ const AuditorSBT = ({ onSubmit }) => {
 	const handleButtonClick = async () => {
 		write?.()
 
-		if (isSuccess) {
+		//if (isSuccess) {
 			Promise.resolve(onSubmit("mint badge"))
-		}
+		//}
 	}
 
 	return (
-		<div>
+		<div className="bg-box">
 			<h1 className="h1">Get Started</h1>
-			<h2 className="h2">
-				First of all, you will need to get verified as an Auditor on TurtleShell. Therefore, you will
-				need an Auditor SBT.
+			<h2 className="h2 text-center mb-3">
+				First of all, you will need to get verified
+			<p className="mb-1">as an Auditoron TurtleShell.</p>
+			<p className="mb-1">Therefore, you will need an Auditor SBT.</p>
 			</h2>
+			
 
 			<div className="text-center">
 				<button
-					className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
+					className="submit-button"
 					onClick={() => {
 						handleButtonClick()
 					}}
@@ -67,3 +69,5 @@ const AuditorSBT = ({ onSubmit }) => {
 }
 
 export default AuditorSBT
+
+// className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}

@@ -517,14 +517,14 @@ export default function Dashboard() {
 
 	// function that gets called when clicking mint
 	async function onMint() {
-		write?.()
-
+		write?.();
+	  
 		if (!isLoading && isSuccess) {
-			Promise.resolve(setPageState(PageState.mintSuccess))
+		  setPageState(PageState.mintSuccess);
 		} else if (error) {
-			console.log("Error while minting Audit: ", error)
+		  console.log("Error while minting Audit: ", error);
 		}
-	}
+	  }	  
 
 	function renderContent() {
 		let content = ""
