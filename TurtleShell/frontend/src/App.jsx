@@ -1,3 +1,4 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import {
   RainbowKitProvider,
   darkTheme,
@@ -6,39 +7,17 @@ import {
 import "@rainbow-me/rainbowkit/styles.css"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
-import {
-  sepolia,
-  gnosis,
-  gnosisChiado,
-  filecoinHyperspace,
-  optimismGoerli,
-  polygonMumbai,
-  polygonZkEvmTestnet,
-} from "wagmi/chains"
+import { gnosis, gnosisChiado, optimismGoerli, sepolia } from "wagmi/chains"
 import { alchemyProvider } from "wagmi/providers/alchemy"
 import { publicProvider } from "wagmi/providers/public"
+import Cookie3 from "./pages/cookie3/Data"
 import Dashboard from "./pages/dashboard"
 import Landingpage from "./pages/landingpage"
-import Cookie3 from "./pages/cookie3/Data"
 
-const linea = {
-  id: 59140,
-  name: "Linea",
-  network: "linea",
-  nativeCurrency: {
-    name: "Ethereum",
-    symbol: "ETH",
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: {
-      http: "https://rpc.goerli.linea.build",
-    },
-  },
-  blockExplorers: {
-    default: "https://explorer.goerli.linea.build",
-  },
-}
+const client = new ApolloClient({
+  uri: "https://api.studio.thegraph.com/query/48265/turtleshell/v0.0.1",
+  cache: new InMemoryCache(),
+})
 
 const mantleTestnet = {
   id: 5001,
@@ -59,21 +38,9 @@ const mantleTestnet = {
   },
 }
 
-
-
 function App() {
   const { chains, provider } = configureChains(
-    [
-      sepolia,
-      gnosis,
-      gnosisChiado,
-      polygonMumbai,
-      optimismGoerli,
-      linea,
-      polygonZkEvmTestnet,
-      filecoinHyperspace,
-      mantleTestnet,
-    ],
+    [sepolia, gnosis, gnosisChiado, optimismGoerli, mantleTestnet],
     [
       alchemyProvider({ apiKey: import.meta.env.ALCHEMY_API_KEY }),
       publicProvider(),
@@ -100,16 +67,11 @@ function App() {
     {
       path: "/dashboard",
       element: <Dashboard />,
-      
-     
     },
     {
       path: "/cookie3",
       element: <Cookie3 />,
-      
-     
     },
-    
   ])
 
   return (
@@ -124,7 +86,9 @@ function App() {
           overlayBlur: "small",
         })}
       >
-        <RouterProvider router={router} />
+        <ApolloProvider client={client}>
+          <RouterProvider router={router} />
+        </ApolloProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )
