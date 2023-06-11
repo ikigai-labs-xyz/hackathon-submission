@@ -19,6 +19,58 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+const taiko = {
+  id: 167005,
+  name: "Taiko Alpha Testnet",
+  network: "taiko",
+  nativeCurrency: {
+    name: "Ether",
+    symbol: "ETH",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.test.taiko.xyz"],
+    },
+    public: {
+      http: ["https://rpc.test.taiko.xyz"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Taiko Explorer",
+      url: "https://explorer.test.taiko.xyz/",
+    },
+  },
+}
+
+const scroll = {
+  id: 534353,
+  name: "Scroll Alpha Testnet",
+  network: "scroll",
+  nativeCurrency: {
+    name: "Ether",
+    symbol: "ETH",
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      // http: ['https://blockscout.scroll.io/api/eth-rpc'],
+      http: ["https://alpha-rpc.scroll.io/l2"],
+    },
+    public: {
+      http: ["https://alpha-rpc.scroll.io/l2"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Blockscout",
+      url: "https://blockscout.scroll.io",
+    },
+  },
+  // testnet: true,
+}
+
 const mantleTestnet = {
   id: 5001,
   name: "Mantle Testnet",
@@ -40,7 +92,7 @@ const mantleTestnet = {
 
 function App() {
   const { chains, provider } = configureChains(
-    [sepolia, gnosis, gnosisChiado, optimismGoerli, mantleTestnet],
+    [sepolia, taiko, scroll, gnosisChiado, optimismGoerli, mantleTestnet],
     [
       alchemyProvider({ apiKey: import.meta.env.ALCHEMY_API_KEY }),
       publicProvider(),
