@@ -32,14 +32,13 @@ const AuditorSBT = ({ onSubmit }) => {
 		args: [walletAddress],
 	})
 
-	const { write, isSuccess } = useContractWrite(config)
+	const { writeAsync, isSuccess } = useContractWrite(config)
 
 	const handleButtonClick = async () => {
-		write?.()
+		const tx = await writeAsync?.()
+		await tx.wait()
 
-		//if (isSuccess) {
-			Promise.resolve(onSubmit("mint badge"))
-		//}
+		Promise.resolve(onSubmit("mint badge"))
 	}
 
 	return (
@@ -47,10 +46,9 @@ const AuditorSBT = ({ onSubmit }) => {
 			<h1 className="h1">Get Started</h1>
 			<h2 className="h2 text-center mb-3">
 				First of all, you will need to get verified
-			<p className="mb-1">as an Auditoron TurtleShell.</p>
-			<p className="mb-1">Therefore, you will need an Auditor SBT.</p>
+				<p className="mb-1">as an Auditoron TurtleShell.</p>
+				<p className="mb-1">Therefore, you will need an Auditor SBT.</p>
 			</h2>
-			
 
 			<div className="text-center">
 				<button
