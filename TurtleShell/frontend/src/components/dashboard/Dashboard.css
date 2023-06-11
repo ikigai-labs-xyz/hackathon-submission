@@ -1,39 +1,57 @@
+@import 'animate.css';
+
 .h1 {
-    font-style: normal;
-    font-size: 50px;
-    text-align: center;
-    
-    color: #DBDBDB;}
-
-.h2 {
-    font-size: 36px;
-    line-height: 44px;
-    padding-bottom: 2rem;
-    text-align: center;
-
-    color: #383838;}
-
-.submit {
-  display: flex;
-  justify-content: center; /* Align items horizontally */
-  align-items: center; /* Align items vertically */
-  width: 400px;
-  height: 100px;
-  background: linear-gradient(102.51deg, #8B63FF 0.09%, #021A6F 100%);
-  border-radius: 25px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 50px;
+  text-align: center;
+  color: #DBDBDB;
+  animation: fadeInUp;
+  animation-duration: 2s;
 }
 
+.h2 {
+  animation: fadeInUp;
+  animation-duration: 3s;
+  text-align: center;
+}
 
+.submit-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #8B63FF;
+  border-radius: 25px;
+  padding: 8px 16px;
+  color: #C2C2C2;
+  margin-top: 16px;
+}
 
-    /* FormStyles.css */
-
-/* Apply dark background color to the form */
-.form {
+.bg-box {
+  display: flex;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
-    background-color: #222;
-    color: #fff;
-  }
-  
-  /* Apply styles to form elements */
-  
+  margin-top: 300px;
+  background: rgba(139, 99, 255, 0.18);
+  border-radius: 20px;
+  padding: 50px;
+  animation: fadeInUp;
+  animation-duration: 1s;
+}
+
+.form-container {
+  margin-top: 16px;
+}
+
+.form-input {
+  margin-bottom: 8px;
+  width: 10rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #000000;
+}
