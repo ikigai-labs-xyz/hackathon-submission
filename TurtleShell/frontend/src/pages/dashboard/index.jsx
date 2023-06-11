@@ -513,15 +513,16 @@ export default function Dashboard() {
 		args: [contractAddress, contractSecurityData],
 	})
 
-	const { write, isSuccess, error, isLoading } = useContractWrite(config)
+	const { writeAsync, isError, error } = useContractWrite(config)
 
 	// function that gets called when clicking mint
 	async function onMint() {
-		write?.()
+		const tx = await writeAsync?.()
+		await tx.wait()
 
-		if (!isLoading && isSuccess) {
+		if (!isError) {
 			Promise.resolve(setPageState(PageState.mintSuccess))
-		} else if (error) {
+		} else {
 			console.log("Error while minting Audit: ", error)
 		}
 	}

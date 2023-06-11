@@ -32,14 +32,14 @@ const AuditorSBT = ({ onSubmit }) => {
 		args: [walletAddress],
 	})
 
-	const { write, isSuccess } = useContractWrite(config)
+	const { writeAsync } = useContractWrite(config)
 
 	const handleButtonClick = async () => {
-		write?.()
+		const tx = await writeAsync?.()
 
-		if (isSuccess) {
-			Promise.resolve(onSubmit("mint badge"))
-		}
+		await tx.wait()
+
+		Promise.resolve(onSubmit("mint badge"))
 	}
 
 	return (
