@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: SmartContractNFT
+    network: sepolia
+    source:
+      address: "0xa3b1ed01730fbefb4ae0b33456ae59c8192ac5cb"
+      abi: SmartContractNFT
+      startBlock: 3661927
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - MintSmartContractNFT
+        - Transfer
+      abis:
+        - name: SmartContractNFT
+          file: ./abis/SmartContractNFT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: MintSmartContractNFT(address,address,(address,bytes32))
+          handler: handleMintSmartContractNFT
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/smart-contract-nft.ts

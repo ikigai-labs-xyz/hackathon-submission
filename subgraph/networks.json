@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "SmartContractNFT": {
+      "address": "0xa3b1ed01730fbefb4ae0b33456ae59c8192ac5cb",
+      "startBlock": 3661927
+    }
+  }
+}
